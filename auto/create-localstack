@@ -1,0 +1,27 @@
+#!/bin/bash
+
+QUEUE_NAME=demo-queue
+TOPIC_NAME=demo-topic
+FUNCTION_NAME=demo-function
+APP_ENV=dev
+
+awslocal sns create-topic --name=${TOPIC_NAME}
+awslocal sqs create-queue --queue-name=${QUEUE_NAME}
+awslocal sns subscribe \
+    --topic-arn arn:aws:sns:ap-southeast-2:000000000000:${TOPIC_NAME} \
+    --protocol sqs \
+    --notification-endpoint http://localhost:4566/000000000000/${QUEUE_NAME}
+
+awslocal lambda create-function \
+    --code S3Bucket="__local__",S3Key="${LOCAL_CODE_PATH}" \
+    --function-name ${FUNCTION_NAME} \
+    --runtime nodejs12.x \
+    --timeout 5 \
+    --handler dist/index.handler \
+    --role dev \
+    --environment "{\"Variables\":{\"APP_ENV\":\"${APP_ENV}\"}}"
+
+awslocal lambda create-event-source-mapping \
+    --event-source-arn arn:aws:sqs:ap-southeast-2:000000000000:${QUEUE_NAME} \
+    --function-name ${FUNCTION_NAME} \
+    --enabled

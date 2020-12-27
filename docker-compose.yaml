@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  localstack:
+    image: localstack/localstack:0.12.1
+    privileged: true
+    container_name: localstack
+    networks:
+      - app_net
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns,sqs,kms,cloudwatch,lambda
+      - DEFAULT_REGION=ap-southeast-2
+      - LAMBDA_EXECUTOR=docker-reuse
+      - LAMBDA_REMOTE_DOCKER=false
+      - LAMBDA_DOCKER_NETWORK=host
+      - DEBUG=1
+      - HOST_TMP_FOLDER=${TMPDIR}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCAL_CODE_PATH=${PWD}
+    volumes:
+      - ${TMPDIR:-/tmp/localstack}:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./auto/create-localstack:/docker-entrypoint-initaws.d/create-localstack.sh
+      - ./kms/kms_seed.yaml:/init/seed.yaml
+
+networks:
+  app_net:

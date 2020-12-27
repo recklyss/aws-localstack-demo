@@ -1,0 +1,10 @@
+Keys:
+  Symmetric:
+    Aes:
+      - Metadata:
+          KeyId: 832ac356-3c82-4c4d-a3dc-7489da152197
+        BackingKeys:
+          - 2bdaead27fe7da2de47945d34cd6d79e36494e73802f3cd3869f1d2cb0b5d74c
+Aliases:
+  - AliasName: alias/testing
+    TargetKeyId: 832ac356-3c82-4c4d-a3dc-7489da152197

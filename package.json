@@ -1,0 +1,20 @@
+{
+  "name": "aws-localstack-demo",
+  "version": "1.0.0",
+  "description": "A nice demo to guide you to run LocalStack locally.",
+  "main": "index.js",
+  "repository": "https://github.com/Fatezhang/aws-localstack-demo.git",
+  "author": "Fatezhang",
+  "license": "MIT",
+  "scripts": {
+    "compile": "rm -rf dist && tsc"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.68",
+    "@types/node": "^14.14.16",
+    "aws-sdk": "^2.817.0"
+  },
+  "dependencies": {
+    "typescript": "^4.1.3"
+  }
+}
